@@ -15,7 +15,7 @@ const InputForm: React.FC = () => {
     e.preventDefault();
     try {
       setLoading(true)
-      const response = await fetch(`${process.env.GOOGLE_CLOUD_FUNCTION_URL}`, {
+      const response = await fetch('https://us-west2-tiktok-savesound.cloudfunctions.net/podify/create', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
