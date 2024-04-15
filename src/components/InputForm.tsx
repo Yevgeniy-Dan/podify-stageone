@@ -15,7 +15,7 @@ const InputForm: React.FC = () => {
     e.preventDefault();
     try {
       setLoading(true)
-      const response = await fetch('https://us-west2-tiktok-savesound.cloudfunctions.net/podify/create', {
+      const response = await fetch('https://us-west2-podify-420416.cloudfunctions.net/podcasts/create', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
