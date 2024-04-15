@@ -15,7 +15,7 @@ const InputForm: React.FC = () => {
     e.preventDefault();
     try {
       setLoading(true)
-      const response = await fetch('/api/createPodcast', {
+      const response = await fetch(`${process.env.GOOGLE_CLOUD_FUNCTION_URL}`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
