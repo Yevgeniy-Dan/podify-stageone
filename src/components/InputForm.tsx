@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { LoadingButton } from './ui/loading-button';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 const InputForm: React.FC = () => {
   const [url, setUrl] = useState<string>('');
@@ -15,7 +15,7 @@ const InputForm: React.FC = () => {
     e.preventDefault();
     try {
       setLoading(true)
-      const response = await fetch('https://us-west2-podify-420416.cloudfunctions.net/podcasts/create', {
+      const response = await fetch('https://podcasts-rno6goyjqq-wl.a.run.app/create', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
