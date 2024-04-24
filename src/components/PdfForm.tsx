@@ -51,7 +51,7 @@ const PdfForm = () => {
     try {
       setLoading(true)
       setDisabled(true)
-      const response = await fetch('https://us-west2-podify-420416.cloudfunctions.net/fromPDF/create', {
+      const response = await fetch('https://frompdf-rno6goyjqq-wl.a.run.app/create', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

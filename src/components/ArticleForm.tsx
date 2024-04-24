@@ -18,7 +18,7 @@ const ArticleForm: React.FC = () => {
     try {
       setLoading(true);
       setDisabled(true);
-      const response = await fetch('https://podcasts-rno6goyjqq-wl.a.run.app/create', {
+      const response = await fetch('https://fromurl-rno6goyjqq-wl.a.run.app/create', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
