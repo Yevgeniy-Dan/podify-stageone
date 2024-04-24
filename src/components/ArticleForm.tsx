@@ -5,17 +5,20 @@ import { Input } from '@/components/ui/input';
 import { LoadingButton } from './ui/loading-button';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import Link from 'next/link';
 
-const InputForm: React.FC = () => {
+const ArticleForm: React.FC = () => {
   const [url, setUrl] = useState<string>('');
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false)
+  const [disabled, setDisabled] = useState<boolean>(true); // New state for disabling submit button
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       setLoading(true)
-      const response = await fetch('https://podcasts-rno6goyjqq-wl.a.run.app/create', {
+      setDisabled(true)
+      const response = await fetch('https://us-west2-podify-420416.cloudfunctions.net/fromURL/create', {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -31,6 +34,7 @@ const InputForm: React.FC = () => {
       const audioUrl = URL.createObjectURL(blob);
       setAudioUrl(audioUrl);
       setLoading(false)
+      setDisabled(false)
     } catch (error) {
       console.error("Error fetching content:", error);
     }
@@ -68,9 +72,14 @@ const InputForm: React.FC = () => {
                 />
            </div>
             <div className='p-3'>
-              <LoadingButton className="w-full" loading={loading} >Submit</LoadingButton>
+              <LoadingButton className="w-full" loading={loading} disabled={disabled} >Submit</LoadingButton>
             </div>
           </form>
+          <div className='text-blue-600 underline pb-3'>
+          <Link href='/pdf'>
+            <p>or upload a PDF</p>
+          </Link>
+          </div>
         </div>
       </Card>
       {audioUrl &&
@@ -90,4 +99,4 @@ const InputForm: React.FC = () => {
   );
 };
 
-export default InputForm;
+export default ArticleForm;

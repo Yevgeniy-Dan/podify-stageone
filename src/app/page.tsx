@@ -1,7 +1,7 @@
-import InputForm from "@/components/InputForm";
+import ArticleForm from "@/components/ArticleForm";
 
 export default function Home() {
   return (
-    <InputForm />
+    <ArticleForm />
   );
 }
