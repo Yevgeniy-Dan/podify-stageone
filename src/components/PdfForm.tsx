@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { LoadingButton } from './ui/loading-button';
 
+declare const pdfjsLib: any;
+
 const PdfForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
