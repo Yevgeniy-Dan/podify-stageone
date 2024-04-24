@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { LoadingButton } from './ui/loading-button';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Toaster } from '@/components/ui/sonner'
+
 import Link from 'next/link';
+import { toast } from "sonner"
+import React, { useState, useEffect } from 'react';
 
 const ArticleForm: React.FC = () => {
   const [url, setUrl] = useState<string>('');
@@ -27,7 +30,10 @@ const ArticleForm: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        toast("Internal server error, please try again later.");
+        setLoading(false)
+        setDisabled(false)
+        throw new Error();
       }
 
       const blob = await response.blob();
@@ -53,6 +59,7 @@ const ArticleForm: React.FC = () => {
 
   return (
     <>
+    <Toaster />
       <div className="flex flex-col items-center space-y-4 m-10">
         <Card className="w-full max-w-2xl space-y-4 text-center">
           <div className="space-y-2">

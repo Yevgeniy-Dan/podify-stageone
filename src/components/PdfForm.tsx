@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { toast } from 'sonner';
+
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { LoadingButton } from './ui/loading-button';
@@ -60,7 +62,10 @@ const PdfForm = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        toast("Internal server error, please try again later.");
+        setLoading(false)
+        setDisabled(false)
+        throw new Error();
       }
 
       const blob = await response.blob();
