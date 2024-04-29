@@ -13,14 +13,16 @@ const PdfForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [pdfText, setPdfText] = useState<any>(null);
-  const [disabled, setDisabled] = useState<boolean>(true); // New state for disabling submit button
+  const [pdfTitle, setPdfTitle] = useState<any>(null);
+  const [disabled, setDisabled] = useState<boolean>(true);
 
   function onFileChange(event: any) {
     const file = event.target.files[0];
+    setPdfTitle(file.name)
     const fileReader = new FileReader();
     fileReader.onload = onLoadFile;
     fileReader.readAsArrayBuffer(file);
-    setDisabled(false); // Enable the submit button when a file is uploaded
+    setDisabled(false); 
   }
   
   function onLoadFile(event: any) {
@@ -58,7 +60,7 @@ const PdfForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: pdfText })
+        body: JSON.stringify({ text: pdfText, title: pdfTitle })
       });
 
       if (!response.ok) {
@@ -68,9 +70,9 @@ const PdfForm = () => {
         throw new Error();
       }
 
-      const blob = await response.blob();
-      const audioUrl = URL.createObjectURL(blob);
-      setAudioUrl(audioUrl);
+      const data = await response.json();
+      setAudioUrl(data.audioURL);
+      setPdfTitle(data.title); 
       setLoading(false);
       setDisabled(false)
     } catch (error) {
@@ -92,7 +94,7 @@ const PdfForm = () => {
         <div className="space-y-2">
           <h1 className="text-3xl font-bold pt-3 p-1">Convert any PDF into a podcast</h1>
           <p className="text-gray-500 dark:text-gray-400">
-            Upload a PDF, and we&apos;ll convert it into a Podcast for you.
+            Upload a PDF, and we'll convert it into a Podcast for you.
           </p>
         </div>
         <div className="space-y-2">
@@ -116,8 +118,8 @@ const PdfForm = () => {
       {audioUrl &&
       <Card className="w-full">
           <CardHeader className="flex items-center gap-2">
-            <CardTitle>Podcast Name</CardTitle>
-            <CardDescription>Podcast Artist</CardDescription>
+            <CardTitle>{pdfTitle}</CardTitle>
+            <CardDescription>User Uploaded</CardDescription>
           </CardHeader>
           <CardContent className="grid items-center gap-4">
             <audio className="w-full" controls src={audioUrl}>

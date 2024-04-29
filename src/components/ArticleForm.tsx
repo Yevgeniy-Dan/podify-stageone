@@ -10,13 +10,13 @@ import Link from 'next/link';
 import { toast } from "sonner"
 import React, { useState, useEffect } from 'react';
 
-const ArticleForm: React.FC = () => {
-  const [url, setUrl] = useState<string>('');
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [disabled, setDisabled] = useState<boolean>(true);
+const ArticleForm = () => {
+  const [url, setUrl] = useState('');
+  const [apiResponse, setApiResponse] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       setLoading(true);
@@ -31,14 +31,13 @@ const ArticleForm: React.FC = () => {
 
       if (!response.ok) {
         toast("Internal server error, please try again later.");
-        setLoading(false)
-        setDisabled(false)
+        setLoading(false);
+        setDisabled(false);
         throw new Error();
       }
 
-      const blob = await response.blob();
-      const audioUrl = URL.createObjectURL(blob);
-      setAudioUrl(audioUrl);
+      const data = await response.json();
+      setApiResponse(data);
       setLoading(false);
       setDisabled(false);
     } catch (error) {
@@ -47,19 +46,12 @@ const ArticleForm: React.FC = () => {
   };
 
   useEffect(() => {
-    return () => {
-      if (audioUrl) URL.revokeObjectURL(audioUrl);
-    };
-  }, [audioUrl]);
-
-  useEffect(() => {
-    // Check if URL is empty or not a valid URL
-    setDisabled(!(url.trim()));
+    setDisabled(!url.trim());
   }, [url]);
 
   return (
     <>
-    <Toaster />
+      <Toaster />
       <div className="flex flex-col items-center space-y-4 m-10">
         <Card className="w-full max-w-2xl space-y-4 text-center">
           <div className="space-y-2">
@@ -85,7 +77,7 @@ const ArticleForm: React.FC = () => {
                 />
               </div>
               <div className='p-3'>
-                <LoadingButton className="w-full" loading={loading} disabled={disabled} >Submit</LoadingButton>
+                <LoadingButton className="w-full" loading={loading} disabled={disabled}>Submit</LoadingButton>
               </div>
             </form>
             <div className='text-blue-600 underline pb-3'>
@@ -95,14 +87,18 @@ const ArticleForm: React.FC = () => {
             </div>
           </div>
         </Card>
-        {audioUrl &&
+        {apiResponse &&
           <Card className="w-full">
             <CardHeader className="flex items-center gap-2">
-              <CardTitle>Podcast Name</CardTitle>
-              <CardDescription>Podcast Artist</CardDescription>
+              <CardTitle>{apiResponse.title}</CardTitle>
+              <CardDescription className='hover:underline'>
+                <Link href={apiResponse.authorHref}>
+                  {apiResponse.author}
+                </Link>
+              </CardDescription>
             </CardHeader>
             <CardContent className="grid items-center gap-4">
-              <audio className="w-full" controls src={audioUrl}>
+              <audio className="w-full" controls src={apiResponse.audioURL}>
               </audio>
             </CardContent>
           </Card>
